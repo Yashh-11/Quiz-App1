@@ -61,17 +61,28 @@ mcqArray.forEach((value, index) => {
 
 let questionBtn = document.querySelectorAll('.left-section button');
 let displayQus = document.querySelector('.card-header')
-
+let displayOps = document.querySelector('ul')
 
 questionBtn.forEach((button) => {
     button.addEventListener('click', function(e) {
+        displayOps.textContent = '';
         let value = e.target.innerHTML;
         // console.log(value);
         displayQus.textContent = mcqArray[value - 1].question
-        console.log(displayQus);
-        
+        // console.log(displayQus);
         // console.log();
-         
+        
+        // options 
+        mcqArray[value - 1].options.forEach((option)=>{
+            let li = document.createElement('li');
+            li.innerHTML = 
+            `
+            <input type="radio" name="option" value="${option}"/>
+            <label>${option}<label/>
+            `
+            // radio.style.cursor = "pointer";
+            displayOps.appendChild(li);
+        })
     })
 })
 
