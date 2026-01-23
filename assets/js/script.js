@@ -86,3 +86,9 @@ questionBtn.forEach((button) => {
     })
 })
 
+let start = document.querySelector('.start-btn');
+let ready=document.querySelector('.quiz-container');
+
+start.addEventListener('click',function(e){
+    ready.classList.add('d-none');
+})
