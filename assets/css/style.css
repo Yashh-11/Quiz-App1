@@ -1,0 +1,21 @@
+.main-section{
+    width: 60%;
+    height: 100vh;
+    /* background: #c0b5b5b3; */
+}
+
+.left-section{
+    width: 20%;
+    height: 100vh;
+    background: #e3d3d3b0;
+}
+.right-section{
+    width: 20%;
+    height: 100vh;
+    background: red;
+}
+
+/* .left-section button{
+    border-radius: 50%;
+    border: none;
+} */
