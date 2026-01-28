@@ -23,7 +23,7 @@
         </div>
     </div>
 
-    <div class="quiz-wrepper row">
+    <div class="quiz-wrapper row d-none">
         <div class="left-section text-center">
             <h3 class="text-center mt-5 mb-5">Question Navigator</h3>
         </div>
@@ -32,18 +32,18 @@
                 <h5 class="card-header fs-3"></h5>
                 <div class="card-body">
                     <p class="card-text">
-                    <ul class="list-unstyled fs-4">
-
-                    </ul>
+                   <ul class="list-unstyled fs-4 options"></ul>
                     </p>
                 </div>
                 <div class="card-footer ">
-                    <button class="btn btn-outline-success">Next</button>
+                    <button class="btn btn-outline-secondary prev">Previous</button>
+                    <button class="btn btn-outline-success next">Next</button>
                 </div>
             </div>
         </div>
-        <div class="right-section">
-
+        <div class="right-section timer-box text-center text-light">
+            <h5 class="mt-5 fs-2 fw-bolder">Time Left</h5>
+            <h3 id="timer" class="fs-2 fw-bolder"></h3>
         </div>
     </div>
 

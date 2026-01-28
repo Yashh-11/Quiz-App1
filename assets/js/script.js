@@ -51,44 +51,103 @@ const mcqArray = [
     }
 ];
 
-let leftSec = document.querySelector('.left-section');
-mcqArray.forEach((value, index) => {
-    let queBtn = document.createElement('button');
-    queBtn.innerHTML = index + 1
-    queBtn.classList.add('btn', 'btn-outline-danger', 'm-2', 'py-2', 'px-3')
-    leftSec.appendChild(queBtn);
-})
 
-let questionBtn = document.querySelectorAll('.left-section button');
-let displayQus = document.querySelector('.card-header')
-let displayOps = document.querySelector('ul')
 
-questionBtn.forEach((button) => {
-    button.addEventListener('click', function(e) {
-        displayOps.textContent = '';
-        let value = e.target.innerHTML;
-        // console.log(value);
-        displayQus.textContent = mcqArray[value - 1].question
-        // console.log(displayQus);
-        // console.log();
-        
-        // options 
-        mcqArray[value - 1].options.forEach((option)=>{
-            let li = document.createElement('li');
-            li.innerHTML = 
-            `
-            <input type="radio" name="option" value="${option}"/>
-            <label>${option}<label/>
-            `
-            // radio.style.cursor = "pointer";
-            displayOps.appendChild(li);
-        })
-    })
-})
+let currentQue = 0;
 
 let start = document.querySelector('.start-btn');
-let ready=document.querySelector('.quiz-container');
+let ready = document.querySelector('.quiz-container');
+let quiz = document.querySelector('.quiz-wrapper');
 
-start.addEventListener('click',function(e){
+let displayQues = document.querySelector('.card-header');
+let displayOp = document.querySelector('.options');
+
+
+let nextBtn = document.querySelector('.next');
+let prevBtn = document.querySelector('.prev');
+
+start.addEventListener('click', () => {
     ready.classList.add('d-none');
-})
+    quiz.classList.remove('d-none');
+    showQuestion();
+});
+
+let leftSec = document.querySelector('.left-section');
+mcqArray.forEach((value, index) => {
+    let btn = document.createElement('button');
+    btn.innerText = index + 1;
+    btn.className = 'btn btn-outline-danger m-1';
+
+    btn.addEventListener('click', () => {
+        currentQue = index;
+        showQuestion();
+        setActive(index);
+    });
+
+    leftSec.appendChild(btn);
+});
+
+function showQuestion() {
+    displayQues.textContent = mcqArray[currentQue].question;
+    displayOp.innerHTML = '';
+
+    mcqArray[currentQue].options.forEach(option => {
+        displayOp.innerHTML += `
+                <label>
+                    <input type="radio" name="option" value=${option}> ${option}
+                </label><br>
+        `;
+        updateActive();
+        startTimer();   
+    });
+}
+
+nextBtn.addEventListener('click', () => {
+    if (currentQue < mcqArray.length - 1) {
+        currentQue++;
+        showQuestion();
+        updateActive();
+        startTimer();
+
+    }
+});
+
+prevBtn.addEventListener('click', () => {
+    if (currentQue > 0) {
+        currentQue--;
+        showQuestion();
+        updateActive();
+        startTimer();
+
+    }
+});
+
+function updateActive() {
+    let allBtns = document.querySelectorAll('.left-section button');
+    allBtns.forEach(btn => btn.classList.remove('active'));
+    allBtns[currentQue].classList.add('active');
+}
+
+
+let time = 60;
+let timerInterval;
+
+function startTimer() {
+    let timerDisplay = document.getElementById('timer');
+    clearInterval(timerInterval);
+    time = 60;
+    timerDisplay.innerText = time;
+
+    timerInterval = setInterval(() => {
+        time--;
+        timerDisplay.innerText = time;
+
+        if (time === 0) {
+            clearInterval(timerInterval);
+        }
+    }, 1000);
+}
+
+
+
+
