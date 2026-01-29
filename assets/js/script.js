@@ -80,8 +80,9 @@ mcqArray.forEach((value, index) => {
 
     btn.addEventListener('click', () => {
         currentQue = index;
+        saveAnswer();
         showQuestion();
-        setActive(index);
+        updateActive();
     });
 
     leftSec.appendChild(btn);
@@ -92,29 +93,38 @@ function showQuestion() {
     displayOp.innerHTML = '';
 
     mcqArray[currentQue].options.forEach(option => {
+
+        let isChecked = (mcqArray[currentQue].userAnswer === option) ? "checked" : "";
         displayOp.innerHTML += `
-                <label>
-                    <input type="radio" name="option" value=${option}> ${option}
-                </label><br>
-        `;
+    <li>
+        <label>
+            <input type="radio" name="option" value="${option}" ${isChecked}> ${option}
+        </label>
+    </li>`;
         updateActive();
-        startTimer();   
+        startTimer();
     });
 }
 
+
 nextBtn.addEventListener('click', () => {
+    saveAnswer();
     if (currentQue < mcqArray.length - 1) {
         currentQue++;
         showQuestion();
         updateActive();
         startTimer();
-
+        // nextBtn.classList.remove('disabled btn-outline-success');
     }
+    // if (currentQue === 9) {
+    //     nextBtn.classList.add('disabled');
+    // }
 });
 
 prevBtn.addEventListener('click', () => {
     if (currentQue > 0) {
         currentQue--;
+        saveAnswer();
         showQuestion();
         updateActive();
         startTimer();
@@ -148,6 +158,44 @@ function startTimer() {
     }, 1000);
 }
 
+function saveAnswer() {
+    let selected = document.querySelector('input[name = "option"]:checked');
+    if (selected) {
+        mcqArray[currentQue].userAnswer = selected.value;
+    }
+}
 
+function result() {
+    saveAnswer();
+
+    let score = 0;
+    mcqArray.forEach(question => {
+        if (question.userAnswer === question.answer) {
+            score++;
+        }
+    })
+    return score;
+}
+
+let submit = document.querySelector('.submit');
+let scoreBoard = document.querySelector('.result');
+let resultCard = document.querySelector('.result .card');
+
+submit.addEventListener('click', () => {
+    let finalScore = result();
+
+    quiz.classList.add('d-none');
+    scoreBoard.classList.remove('d-none');
+
+    clearInterval(timerInterval);
+    resultCard.innerHTML = `
+        <div class="card-body text-center d-flex flex-column justify-content-center align-items-center">
+            <h1 class="text-success">Congratulations!</h1>
+            <p class="fs-4">You have successfully completed the quiz.</p>
+            <div class="display-2 fw-bold my-4">${finalScore} / ${mcqArray.length}</div>
+            <button class="btn btn-primary btn-lg mt-3" onclick="location.reload()">Restart Quiz</button>
+        </div>
+    `;
+});
 
 
